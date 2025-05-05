@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #4682b4; /* Steel blue for header */
+  --secondary-color: #b0c4de; /* Light steel blue for background */
+  --text-color: #333;
+  --background-color: #fff;
+}
+
+body {
+  color: var(--text-color);
+  background-color: var(--secondary-color);
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.todo-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.task-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #444;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  height: 47px; /* Fixed height to match button */
+  box-sizing: border-box;
+}
+
+.add-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0 30px;
+  /* padding-bottom: 30px; */
+  margin-bottom: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  height: 47px; /* Fixed height to match input */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-table {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.table-header {
+  background-color: #f0f0f0;
+  padding: 15px;
+  font-weight: bold;
+  display: grid;
+  grid-template-columns: 50px 1fr 150px 150px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.task-row {
+  display: grid;
+  grid-template-columns: 50px 1fr 150px 150px;
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  align-items: center;
+}
+
+.action-button {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 6px 12px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.action-button:hover {
+  background-color: #e9e9e9;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-input {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #888;
+}
+
+@layer utilities {
+  .todo-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+  }
+}
