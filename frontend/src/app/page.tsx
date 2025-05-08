@@ -222,7 +222,6 @@ export default function Home() {
                   onDelete={deleteTodo}
                   onToggle={toggleTodo}
                   onEdit={editTodo}
-                  disabled={isLoading}
                 />
               ))}
               

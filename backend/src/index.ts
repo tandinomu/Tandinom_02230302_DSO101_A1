@@ -56,7 +56,8 @@ app.post('/todo', async (c) => {
     
     const newTodo = await prisma.todo.create({
       data: {
-        title: body.title
+        title: body.title,
+        completed: body.completed || false // Set default to false if not provided
       }
     })
     
@@ -67,50 +68,29 @@ app.post('/todo', async (c) => {
   }
 })
 
-
-// app.put('/todo/:id', async (c) => {
-//   try {
-//     const id = c.req.param('id')
-//     const body = await c.req.json()
-    
-//     // Check if todo exists
-//     const existingTodo = await prisma.todo.findUnique({
-//       where: { id: Number(id) }
-//     })
-    
-//     if (!existingTodo) {
-//       return c.json({ error: 'Todo not found' }, 404)
-//     }
-    
-//     const updatedTodo = await prisma.todo.update({
-//       where: { id: Number(id) },
-//       data: {
-//         title: body.title !== undefined ? body.title : existingTodo.title,
-//         completed: body.completed !== undefined ? body.completed : existingTodo.completed,
-//         description: body.description !== undefined ? body.description : existingTodo.description
-//       }
-//     })
-    
-//     return c.json(updatedTodo)
-//   } catch (error) {
-//     console.error('Error updating todo:', error)
-//     return c.json({ error: 'Failed to update todo' }, 500)
-//   }
-// })
-
-app.patch('/update/todo/:id', async (c) => {
+// PUT - Update a todo (uncomment and fix this endpoint)
+app.put('/todo/:id', async (c) => {
   try {
     const id = c.req.param('id')
     const body = await c.req.json()
-
+    
+    // Check if todo exists
+    const existingTodo = await prisma.todo.findUnique({
+      where: { id: Number(id) }
+    })
+    
+    if (!existingTodo) {
+      return c.json({ error: 'Todo not found' }, 404)
+    }
+    
     const updatedTodo = await prisma.todo.update({
       where: { id: Number(id) },
       data: {
-        title: body.title,
-        completed: body.true
+        title: body.title !== undefined ? body.title : existingTodo.title,
+        completed: body.completed !== undefined ? body.completed : existingTodo.completed,
       }
     })
-
+    
     return c.json(updatedTodo)
   } catch (error) {
     console.error('Error updating todo:', error)
@@ -118,8 +98,37 @@ app.patch('/update/todo/:id', async (c) => {
   }
 })
 
+// You can keep the PATCH endpoint as an alternative, just fix the error in it
+app.patch('/update/todo/:id', async (c) => {
+  try {
+    const id = c.req.param('id')
+    const body = await c.req.json()
+    
+    // Check if todo exists first
+    const existingTodo = await prisma.todo.findUnique({
+      where: { id: Number(id) }
+    })
+    
+    if (!existingTodo) {
+      return c.json({ error: 'Todo not found' }, 404)
+    }
+    
+    const updatedTodo = await prisma.todo.update({
+      where: { id: Number(id) },
+      data: {
+        title: body.title !== undefined ? body.title : existingTodo.title,
+        completed: body.completed !== undefined ? body.completed : existingTodo.completed
+      }
+    })
+    
+    return c.json(updatedTodo)
+  } catch (error) {
+    console.error('Error updating todo:', error)
+    return c.json({ error: 'Failed to update todo' }, 500)
+  }
+})
 
-//DELETE - Delete a todo
+// DELETE - Delete a todo
 app.delete('/todo/:id', async (c) => {
   try {
     const id = c.req.param('id')
