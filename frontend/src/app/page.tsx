@@ -7,11 +7,10 @@ interface Todo {
   id: number;
   title: string;
   completed: boolean;
-  description?: string; // Optional field to match your API schema
+  description?: string; 
 }
 
-// API base URL - change this to match your backend URL
-const API_URL = 'http://localhost:8000';
+const API_URL = 'https://be-todo-02230302-2.onrender.com';
 
 export default function Home() {
   const [todos, setTodos] = useState<Todo[]>([]);
