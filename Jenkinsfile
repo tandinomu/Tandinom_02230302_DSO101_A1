@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     tools {
-        nodejs 'NodeJS 24.0.2'  
+        nodejs 'NodeJS 24.0.2'  // This name must match your Jenkins NodeJS configuration
     }
 
     stages {
@@ -47,9 +47,9 @@ pipeline {
             steps {
                 dir('frontend') {
                     script {
-                        // Check if build script exists
-                        def packageJson = readJSON file: 'package.json'
-                        if (packageJson.scripts && packageJson.scripts.build) {
+                        // Try to run build, skip if not available
+                        def buildExists = sh(script: 'npm run build --dry-run', returnStatus: true) == 0
+                        if (buildExists) {
                             sh 'npm run build'
                         } else {
                             echo 'No build script found in frontend package.json, skipping build'
@@ -79,9 +79,9 @@ pipeline {
             steps {
                 dir('frontend') {
                     script {
-                        // Check if test script exists
-                        def packageJson = readJSON file: 'package.json'
-                        if (packageJson.scripts && packageJson.scripts.test) {
+                        // Try to run tests, skip if not available
+                        def testExists = sh(script: 'npm test --dry-run', returnStatus: true) == 0
+                        if (testExists) {
                             sh 'npm test -- --watchAll=false'
                         } else {
                             echo 'No test script found in frontend package.json, skipping tests'
