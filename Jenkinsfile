@@ -94,7 +94,7 @@ pipeline {
                         ) == 0
                         
                         if (hasTest) {
-                            sh 'npm test -- --watchAll=false'
+                            sh 'npm test'
                         } else {
                             echo 'No test script found in frontend package.json, skipping tests'
                         }
