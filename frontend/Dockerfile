@@ -1,4 +1,4 @@
-# Use Node.js 20 LTS
+# Use Node.js LTS (as required by assignment)
 FROM node:20-alpine
 
 # Set working directory
@@ -7,18 +7,20 @@ WORKDIR /app
 # Copy package files first
 COPY package*.json ./
 
-# Clear npm cache and install
-RUN npm cache clean --force
+# Install dependencies
 RUN npm install
 
-# Copy rest of the files
+# Copy all files
 COPY . .
 
-# Build the application
+# Build Next.js application
 RUN npm run build
 
-# Expose port
+# Run tests (as required by assignment)
+RUN npm test
+
+# Expose port 3000
 EXPOSE 3000
 
-# Start the app
+# Start Next.js production server
 CMD ["npm", "start"]
