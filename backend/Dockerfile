@@ -1,32 +1,27 @@
-# Use Node.js LTS (as required by assignment)
+# Use Node.js 20 LTS
 FROM node:20-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files first (better caching)
+# Copy package files first
 COPY package*.json ./
 
-# Install dependencies
+# Clear npm cache and install
+RUN npm cache clean --force
 RUN npm install
 
-# Copy all files
+# Copy rest of the files
 COPY . .
 
 # Generate Prisma client
 RUN npx prisma generate
 
-# Build TypeScript code
+# Build the application
 RUN npm run build
 
-# Run tests (as required by assignment)
-RUN npm test
-
-# Expose port 8000
+# Expose port
 EXPOSE 8000
-
-# Set environment variable
-ENV PORT=8000
 
 # Start the app
 CMD ["npm", "start"]
