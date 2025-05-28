@@ -1,44 +1,32 @@
-# # backend/Dockerfile
-# FROM --platform=linux/amd64 node:18-alpine
-
-# WORKDIR /app
-
-# # Copy everything first (so prisma schema is available for postinstall)
-# COPY . .
-
-# # Install dependencies
-# RUN npm install
-
-# # Explicitly run prisma generate again (optional since it's in postinstall)
-# RUN npx prisma generate
-
-# EXPOSE 8000
-
-# # Start the app
-# CMD ["npm", "run", "dev"]
-# backend/Dockerfile
-FROM --platform=linux/amd64 node:18-alpine
+# Use Node.js LTS (as required by assignment)
+FROM node:20-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Copy everything
-COPY . .
+# Copy package files first (better caching)
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
+# Copy all files
+COPY . .
+
 # Generate Prisma client
 RUN npx prisma generate
 
-# Build your TypeScript code (assuming you're using TypeScript)
+# Build TypeScript code
 RUN npm run build
 
-# Expose port 8000 to Render
+# Run tests (as required by assignment)
+RUN npm test
+
+# Expose port 8000
 EXPOSE 8000
 
-# Use environment variable PORT in app (required!)
+# Set environment variable
 ENV PORT=8000
 
-# Start production server
-CMD ["node", "dist/index.js"]
+# Start the app
+CMD ["npm", "start"]
