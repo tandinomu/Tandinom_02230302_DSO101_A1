@@ -4,18 +4,15 @@ FROM node:20-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy package files first
+# Copy package files AND prisma schema first
 COPY package*.json ./
+COPY prisma/ ./prisma/
 
-# Clear npm cache and install
-RUN npm cache clean --force
+# Now npm install will work because prisma schema is available
 RUN npm install
 
-# Copy rest of the files
+# Copy the rest of the files
 COPY . .
-
-# Generate Prisma client
-RUN npx prisma generate
 
 # Build the application
 RUN npm run build
